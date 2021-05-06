@@ -50,7 +50,7 @@ export default {
       ctx.response.status = 204; // no content
     } catch (e) {
       ctx.response.status = 404;
-      ctx.response.body = { error: "User does't exists in our database." };
+      ctx.response.body = { error: "Card not found." };
     }
   },
 };
