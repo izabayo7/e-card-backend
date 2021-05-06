@@ -27,20 +27,20 @@ export default {
     }
   },
   async update(ctx: any) {
-    const value = await validation.validateUpdate(ctx);
+    const value = await validation.validateCardUpdate(ctx);
     if (value) {
       const data = {
-        email: value.email,
-        name: value.name,
-        password: value.password,
+        code: value.code,
+        amount: value.amount,
       };
       try {
-        await user.updateOne({ _id: ObjectId(ctx.params.id) }, { $set: data });
+        await Card.updateOne({ _id: ObjectId(ctx.params.id) }, { $set: data });
         ctx.response.status = 200;
         ctx.response.body = { message: "updated" };
+        // TODO create logs here
       } catch (e) {
         ctx.response.status = 404;
-        ctx.response.body = { error: "User does't exists in our database." };
+        ctx.response.body = { error: "Card not found." };
       }
     }
   },
