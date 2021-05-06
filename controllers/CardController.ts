@@ -4,27 +4,26 @@ import validation from "../validation.ts";
 import hash from "../util/hash.ts";
 
 export default {
-  async index(ctx: any) {
-    const data = await user.find();
+  async getAll(ctx: any) {
+    const data = await Card.find();
     ctx.response.body = data;
   },
-  async show(ctx: any) {
+  async getById(ctx: any) {
     try {
-      const data = await user.findOne({ _id: ObjectId(ctx.params.id) });
+      const data = await Card.findOne({ _id: ObjectId(ctx.params.id) });
       ctx.response.body = data;
     } catch (e) {
       ctx.response.status = 404;
-      ctx.response.body = { error: "User does't exists in our database." };
+      ctx.response.body = { error: "Card not found." };
     }
   },
-  async store(ctx: any) {
-    const value = await validation.validate(ctx);
+  async createNew(ctx: any) {
+    const value = await validation.validateCardCreation(ctx);
     if (value) {
       value.created_at = parseInt((new Date().getTime() / 1000).toString());
-      value.password = await hash.bcrypt(value.password);
-      const insertId = await user.insertOne(value);
+      const new_user = await Card.insertOne(value);
       ctx.response.status = 201;
-      ctx.response.body = insertId;
+      ctx.response.body = new_user;
     }
   },
   async update(ctx: any) {
