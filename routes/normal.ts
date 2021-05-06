@@ -8,7 +8,7 @@ router
   .get("/card/:id", CardController.getById)
   .post("/card", CardController.createNew)
   .put("/card/:id", CardController.update)
-  .delete("/card/:id", CardController.destroy);
+  .delete("/card/:id", CardController.deleteCard);
 
 
 export default router;

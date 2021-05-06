@@ -44,9 +44,9 @@ export default {
       }
     }
   },
-  async destroy(ctx: any) {
+  async deleteCard(ctx: any) {
     try {
-      await user.deleteOne({ _id: ObjectId(ctx.params.id) });
+      await Card.deleteOne({ _id: ObjectId(ctx.params.id) });
       ctx.response.status = 204; // no content
     } catch (e) {
       ctx.response.status = 404;
