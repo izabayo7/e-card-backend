@@ -4,7 +4,7 @@ const client = new MongoClient();
 client.connectWithUri("mongodb://localhost:27017");
 const db = client.database("e_card");
 
-// Defining schema interface
+// Defining card schema interface
 interface CardSchema {
     _id: { $oid: string };
     code: string;
