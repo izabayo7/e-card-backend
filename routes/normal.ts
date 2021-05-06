@@ -1,6 +1,6 @@
-import { Router } from "https://deno.land/x/oak/mod.ts";
+import { Router } from "https://deno.land/std@0.50.0/oak/mod.ts";
 import CardController from "../controllers/CardController.ts";
-import { oakCors } from "https://deno.land/x/cors/mod.ts";
+import { oakCors } from "https://deno.land/std@0.50.0/cors/mod.ts";
 const router = new Router();
 
 router

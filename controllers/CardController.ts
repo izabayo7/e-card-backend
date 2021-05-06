@@ -1,5 +1,5 @@
-import {db, Card} from "../config/databases.ts";
-import { ObjectId } from "https://deno.land/x/mongo@v0.6.0/mod.ts";
+import { db, Card } from "../config/databases.ts";
+import { ObjectId } from "https://deno.land/std@0.50.0/mongo@v0.6.0/mod.ts";
 import validation from "../validation.ts";
 import hash from "../util/hash.ts";
 

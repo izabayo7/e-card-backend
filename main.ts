@@ -1,6 +1,6 @@
-import { Application } from "https://deno.land/x/oak/mod.ts";
-import { oakCors } from "https://deno.land/x/cors/mod.ts";
-import { config } from "https://deno.land/x/dotenv/mod.ts";
+import { Application } from "https://deno.land/std@0.50.0/oak/mod.ts";
+import { oakCors } from "https://deno.land/std@0.50.0/cors/mod.ts";
+import { config } from "https://deno.land/std@0.50.0/dotenv/mod.ts";
 import router from "./routes/normal.ts";
 import notFound from "./404.ts";
 const env = config();
