@@ -63,6 +63,7 @@ export default {
             const card:any = await Card.findOne({code: ctx.params.code});
             if (card) {
                 if (card.amount >= value.amount || value.type == "deposit") {
+                    value.amount = Number(value.amount)
                     const data = {
                         amount: value.type == 'deposit' ? card.amount + value.amount : card.amount - value.amount,
                         updated_at: parseInt((new Date().getTime() / 1000).toString())

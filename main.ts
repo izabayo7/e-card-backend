@@ -8,7 +8,7 @@ const env = config();
 
 const app = new Application();
 const HOST = env.APP_HOST || "http://localhost";
-const PORT = +env.APP_PORT || 8082;
+const PORT = +env.APP_PORT || 8080;
 
 // app.use(websocket);
 app.use(oakCors());
