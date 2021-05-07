@@ -56,6 +56,20 @@ void setup(){
 
 void loop(){
 
+// testing
+
+    String mData="";
+
+    mData = "{
+        amount:"+String(transportFare)+",
+        type: \'withdraw\'
+    }";
+
+    connectToHost(80);
+
+    transferData(mData, "/card/balance/"+String(getUUID()));
+
+/*
   byte block_number = 4;
 
   byte buffer_for_reading[18];
@@ -91,7 +105,7 @@ void loop(){
   mfrc522.PICC_HaltA();
 
   mfrc522.PCD_StopCrypto1();
-
+*/
 }
 
 
@@ -172,7 +186,7 @@ void transferData(String data, const char* filepath){
 
   wifiClient.println("User-Agent: ESP8266/1.0");
 
-  wifiClient.println("Content-Type: application/x-www-form-urlencoded");
+  wifiClient.println("Content-Type: application/json");
 
   wifiClient.println("Content-Length: " +(String)data.length());
 
@@ -443,13 +457,13 @@ void operateData(byte blockNumber, String initialBalance){
     String mData="";
 
     mData = "{
-        amount:"+String(transportFare)+" ,
-        type: ,
-    }"+String(getUUID())+"&field2="+String(initialBalance)+"&field3="+String(transportFare);
+        amount:"+String(transportFare)+",
+        type: \'withdraw\'
+    }";
 
     connectToHost(80);
 
-    transferData(mData, "/nodemcu-test/postRFIDTransactions.php");
+    transferData(mData, "/card/balance/"+String(getUUID()));
 
   }
 
