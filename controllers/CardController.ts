@@ -42,7 +42,7 @@ export default {
         if (value) {
             const data = {
                 code: value.code,
-                amount: value.amount,
+                udpdated_at: parseInt((new Date().getTime() / 1000).toString())
             };
             try {
                 await Card.updateOne({_id: new Bson.ObjectId(ctx.params.id)}, {$set: data});
@@ -62,6 +62,7 @@ export default {
                 if (card.amount >= value.amount || value.type == "deposit") {
                     const data = {
                         amount: value.type == 'deposit' ? card.amount + value.amount : card.amount - value.amount,
+                        udpdated_at: parseInt((new Date().getTime() / 1000).toString())
                     };
 
                     try {
