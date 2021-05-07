@@ -4,13 +4,13 @@ import validation from "../validation.ts";
 const Card = db.collection("cards");
 export default {
   async getAll(ctx: any) {
-    const data = await Card.find();
-    console.log(data)
+    const data = await Card.find().toArray();
     ctx.response.body = data;
   },
   async getById(ctx: any) {
     try {
       const data = await Card.findOne({ _id: new Bson.ObjectId(ctx.params.id) });
+      console.log(data)
       ctx.response.body = data;
     } catch (e) {
       ctx.response.status = 404;
