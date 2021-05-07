@@ -1,6 +1,7 @@
 import db from "../config/databases.ts";
 import {Bson} from "https://deno.land/x/mongo@v0.22.0/mod.ts";
 import validation from "../validation.ts";
+import {CardSchema} from "../types.ts";
 
 const Card = db.collection("cards");
 export default {
@@ -44,11 +45,12 @@ export default {
         }
     },
     async updateCardBalance(ctx: any) {
-        const value = await validation.validateCardCode(ctx);
+        const value = await validation.validateCardBalance(ctx);
         if (value) {
-            const card = await Card.findOne({code: ctx.params.code});
+            const card:any = await Card.findOne({code: ctx.params.code});
+            console.log(card)
             if (card) {
-                if (card.amount >= value.amount) {
+                if (card.amount >= value.amount || value.type == "deposite") {
                     const data = {
                         amount: value.type == 'deposit' ? card.amount + value.amount : card.amount - value.amount,
                     };
@@ -66,12 +68,11 @@ export default {
                         ctx.response.status = 404;
                         ctx.response.body = {error: "Card not found."};
                     }
-                } else{
+                } else {
                     ctx.response.status = 403;
                     ctx.response.body = {error: "Insufficient amount."};
                 }
-            }
-            else{
+            } else {
                 ctx.response.status = 403;
                 ctx.response.body = {error: "Card not found."};
             }

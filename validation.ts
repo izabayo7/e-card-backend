@@ -54,6 +54,11 @@ export default {
             errors.push({["type"]: `amount not allowed`});
         }
 
+        if (status) {
+            ctx.response.body = {errors};
+            return false;
+        }
+
         return value;
     },
     async validateCardBalance(ctx: any) {
@@ -84,7 +89,7 @@ export default {
                 const allowed = ['deposit','withdraw']
                 if (!allowed.includes(value["type"])) {
                     status = 400; // unprocessable entity
-                    errors.push({["type"]: `invalid transaction type`});
+                    errors.push({["type"]: `invalid transaction type, use deposit or withdraw`});
                 }
             }
         } else {
