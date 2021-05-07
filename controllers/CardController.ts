@@ -2,6 +2,7 @@ import db from "../config/databases.ts";
 import {Bson} from "https://deno.land/x/mongo@v0.22.0/mod.ts";
 import validation from "../validation.ts";
 import {CardSchema} from "../types.ts";
+import MyEmitter from "../Events/index.ts"
 
 const Card = db.collection("cards");
 const Transaction = db.collection("transactions");
@@ -62,7 +63,7 @@ export default {
                 if (card.amount >= value.amount || value.type == "deposit") {
                     const data = {
                         amount: value.type == 'deposit' ? card.amount + value.amount : card.amount - value.amount,
-                        udpdated_at: parseInt((new Date().getTime() / 1000).toString())
+                        updated_at: parseInt((new Date().getTime() / 1000).toString())
                     };
 
                     try {
@@ -73,9 +74,17 @@ export default {
                             card: card._id,
                             type: value.type,
                             amount: value.amount,
-                            created_at: parseInt((new Date().getTime() / 1000).toString());
+                            date: new Date().toString().substring(4,15),
+                            time: new Date().toString().substring(16,21)
                         }
+                        console.log(log_data)
                         const new_doc = await Transaction.insertOne(log_data);
+
+                        //emit event to notify user
+                        // MyEmitter.emit("new_transaction", new_doc);
+
+                        dispatchEvent(new Event('new_transaction', new_doc));
+
                         ctx.response.status = 200;
                         ctx.response.body = {message: "updated", new_balance: data.amount};
 

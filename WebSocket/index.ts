@@ -1,21 +1,23 @@
-import {
-  acceptWebSocket,
-  acceptable,
-  WebSocket,
-} from "https://deno.land/std/ws/mod.ts";
+import { WebSocketClient, WebSocketServer } from "https://deno.land/x/websocket@v0.1.1/mod.ts";
+// import MyEmitter from "../Events/index.ts"
 
-export default async (ctx: any, next: () => Promise<void>) => {
-  const req = ctx.request.serverRequest;
-  if (acceptable(req)) {
-    const sock = await ctx.upgrade();
-    for await (const ev of sock) {
-      if (typeof ev === "string") {
-        // text message
-        console.log("ws:Text", ev);
-        await sock.send(ev);
-      }
-    }
-  } else {
-    await next();
-  }
-};
+const wss = new WebSocketServer(8081);
+
+// const event = require('events')
+
+wss.on("connection", function (ws: WebSocketClient) {
+  // console.log("connected", ws)
+
+  addEventListener("new_transaction",(doc:any)=>{
+    console.log(doc)
+    ws.send(doc)
+  })
+  // MyEmitter.on("new_transaction",async (doc:any)=>{
+  //   console.log(doc)
+  //   ws.send(doc)
+  // })
+  ws.on("message",(message:any)=>{
+    console.log(message)
+    ws.send(message)
+  })
+});

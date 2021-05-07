@@ -1,8 +1,8 @@
 import { Application } from "https://deno.land/x/oak@v7.3.0/mod.ts";
 import { oakCors } from "https://deno.land/x/cors@v1.1.0/mod.ts";
 import { config } from "https://deno.land/x/dotenv@v2.0.0/mod.ts";
+import "./WebSocket/index.ts";
 import router from "./routes/normal.ts";
-// import websocket from "./WebSocket/index.ts";
 import notFound from "./404.ts";
 const env = config();
 
@@ -15,5 +15,6 @@ app.use(oakCors());
 app.use(router.routes());
 app.use(notFound);
 
+console.log(`websocket server is running at ${HOST}:8081`);
 console.log(`server is running at ${HOST}:${PORT}`);
 await app.listen({ port: PORT });

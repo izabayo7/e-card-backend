@@ -20,5 +20,11 @@ export interface TransactionSchema {
         type: string,
         enum: ['deposit','withdraw']
     };
+    date: string,
+    time: string,
     amount: string
 }
+
+export type Events = {
+    new_transaction: [any]
+};
