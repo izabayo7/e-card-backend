@@ -7,6 +7,7 @@ router
   .get("/card/:id", CardController.getById)
   .post("/card", CardController.createNew)
   .put("/card/:id", CardController.update)
+    .put("/card/balance/:code", CardController.updateCardBalance)
   .delete("/card/:id", CardController.deleteCard);
 
 

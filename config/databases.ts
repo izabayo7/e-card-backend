@@ -7,7 +7,10 @@ const db = client.database("e_card");
 // Defining card schema interface
 interface CardSchema {
     _id: { $oid: string };
-    code: string;
+    code: {
+        type: string,
+        unique: true
+    };
     amount: string;
     // user: {
     //     type: string,
@@ -15,6 +18,18 @@ interface CardSchema {
     // }
 }
 
+// Defining transaction schema interface
+interface TransactionSchema {
+    _id: { $oid: string };
+    card: { $oid: string };
+    type: {
+        type: string,
+        enum: ['deposit','withdraw']
+    };
+    amount: string
+}
+
 db.collection<CardSchema>("cards");
+db.collection<TransactionSchema>("transactions");
 
 export default db;
