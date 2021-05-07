@@ -31,6 +31,9 @@ export default {
         return value;
     },
     async validateCardCode(ctx: any) {
+        let errors = [];
+        let status;
+
         const body = await ctx.request.body({
             contentTypes: {
                 text: ["application/javascript"],
@@ -44,6 +47,11 @@ export default {
                 errors: {message: "Please provide the required data"},
             };
             return false;
+        }
+        // TODO not allowed fields
+        if (value["amount"]) {
+            status = 403; // unprocessable entity
+            errors.push({["type"]: `amount not allowed`});
         }
 
         return value;
