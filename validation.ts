@@ -8,7 +8,6 @@ export default {
       },
     });
     const value = await body.value;
-    console.log("ahooo",value);
     if (!value) {
       ctx.response.status = 400; // bad request
       ctx.response.body = { error: "Please provide the required data" };
@@ -32,7 +31,13 @@ export default {
     return value;
   },
   async validateCardUpdate(ctx: any) {
-    const { value } = await ctx.request.body();
+    const body = await ctx.request.body({
+      contentTypes: {
+        text: ["application/javascript"],
+      },
+    });
+    const value = await body.value;
+console.log("baba", value)
     if (!value || Object.keys(value).length === 0) {
       ctx.response.status = 400; // bad request
       ctx.response.body = {

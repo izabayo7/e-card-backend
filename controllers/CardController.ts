@@ -17,16 +17,6 @@ export default {
     }
   },
   async createNew(ctx: any) {
-
-    //ctx.request.body({type:"application/json"})
-    const result = ctx.request.body({
-      contentTypes: {
-        text: ["application/javascript"],
-      },
-    })
-
-    console.log(await result.value)
-
     const value = await validation.validateCardCreation(ctx);
     if (value) {
       value.created_at = parseInt((new Date().getTime() / 1000).toString());
