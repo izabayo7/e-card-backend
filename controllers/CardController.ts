@@ -1,16 +1,16 @@
-import { db, Card } from "../config/databases.ts";
-import { ObjectId } from "https://deno.land/std@0.50.0/mongo@v0.6.0/mod.ts";
+import db  from "../config/databases.ts";
+import { Bson } from "https://deno.land/x/mongo@v0.22.0/mod.ts";
 import validation from "../validation.ts";
-import hash from "../util/hash.ts";
-
+const Card = db.collection("cards");
 export default {
   async getAll(ctx: any) {
     const data = await Card.find();
+    console.log(data)
     ctx.response.body = data;
   },
   async getById(ctx: any) {
     try {
-      const data = await Card.findOne({ _id: ObjectId(ctx.params.id) });
+      const data = await Card.findOne({ _id: new Bson.ObjectId(ctx.params.id) });
       ctx.response.body = data;
     } catch (e) {
       ctx.response.status = 404;
@@ -34,7 +34,7 @@ export default {
         amount: value.amount,
       };
       try {
-        await Card.updateOne({ _id: ObjectId(ctx.params.id) }, { $set: data });
+        await Card.updateOne({ _id: new Bson.ObjectId(ctx.params.id) }, { $set: data });
         ctx.response.status = 200;
         ctx.response.body = { message: "updated" };
         // TODO create logs here
@@ -46,7 +46,7 @@ export default {
   },
   async deleteCard(ctx: any) {
     try {
-      await Card.deleteOne({ _id: ObjectId(ctx.params.id) });
+      await Card.deleteOne({ _id: new Bson.ObjectId(ctx.params.id) });
       ctx.response.status = 204; // no content
     } catch (e) {
       ctx.response.status = 404;

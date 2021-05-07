@@ -1,7 +1,7 @@
-import { init, MongoClient } from "https://deno.land/std@0.50.0/mongo@v0.6.0/mod.ts";
-await init();
+import { MongoClient } from "https://deno.land/x/mongo@v0.22.0/mod.ts";
 const client = new MongoClient();
-client.connectWithUri("mongodb://localhost:27017");
+await client.connect("mongodb://127.0.0.1:27017");
+
 const db = client.database("e_card");
 
 // Defining card schema interface
@@ -15,9 +15,6 @@ interface CardSchema {
     // }
 }
 
-const Card = db.collection<CardSchema>("cards");
+db.collection<CardSchema>("cards");
 
-export default {
-    Card,
-    db
-};
+export default db;
