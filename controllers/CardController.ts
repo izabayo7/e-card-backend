@@ -18,12 +18,22 @@ export default {
     }
   },
   async createNew(ctx: any) {
+
+    //ctx.request.body({type:"application/json"})
+    const result = ctx.request.body({
+      contentTypes: {
+        text: ["application/javascript"],
+      },
+    })
+
+    console.log(await result.value)
+
     const value = await validation.validateCardCreation(ctx);
     if (value) {
       value.created_at = parseInt((new Date().getTime() / 1000).toString());
-      const new_user = await Card.insertOne(value);
+      const new_doc = await Card.insertOne(value);
       ctx.response.status = 201;
-      ctx.response.body = new_user;
+      ctx.response.body = new_doc;
     }
   },
   async update(ctx: any) {

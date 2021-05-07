@@ -2,13 +2,18 @@ export default {
   async validateCardCreation(ctx: any) {
     let errors = [];
     let status;
-    const { value } = await ctx.request.body();
+    const body = await ctx.request.body({
+      contentTypes: {
+        text: ["application/javascript"],
+      },
+    });
+    const value = await body.value;
+    console.log("ahooo",value);
     if (!value) {
       ctx.response.status = 400; // bad request
       ctx.response.body = { error: "Please provide the required data" };
       return;
     }
-
     const fields = ["code", "amount",
       // "user_id"
     ];
