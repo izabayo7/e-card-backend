@@ -22,8 +22,10 @@ export default {
     },
     async getTransactionsByCard(ctx: any) {
         try {
+            const card:any = await Card.findOne({_id: new Bson.ObjectId(ctx.params.id)});
             const data = await Transaction.find({card: new Bson.ObjectId(ctx.params.id)}).toArray();
-            ctx.response.body = data;
+            console.log(card)
+            ctx.response.body = {balance: card.amount, transactions: data};
         } catch (e) {
             ctx.response.status = 404;
             ctx.response.body = {error: "Card not found."};
