@@ -19,6 +19,15 @@ export default {
             ctx.response.body = {error: "Card not found."};
         }
     },
+    async getTransactionsByCard(ctx: any) {
+        try {
+            const data = await Transaction.find({card: new Bson.ObjectId(ctx.params.id)}).toArray();
+            ctx.response.body = data;
+        } catch (e) {
+            ctx.response.status = 404;
+            ctx.response.body = {error: "Card not found."};
+        }
+    },
     async createNew(ctx: any) {
         const value = await validation.validateCardCreation(ctx);
         if (value) {
@@ -63,6 +72,7 @@ export default {
                             card: card._id,
                             type: value.type,
                             amount: value.amount,
+                            created_at: parseInt((new Date().getTime() / 1000).toString());
                         }
                         const new_doc = await Transaction.insertOne(log_data);
                         ctx.response.status = 200;
