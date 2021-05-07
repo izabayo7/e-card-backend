@@ -4,6 +4,7 @@ import validation from "../validation.ts";
 import {CardSchema} from "../types.ts";
 
 const Card = db.collection("cards");
+const Transaction = db.collection("transactions");
 export default {
     async getAll(ctx: any) {
         const data = await Card.find().toArray();
@@ -48,9 +49,8 @@ export default {
         const value = await validation.validateCardBalance(ctx);
         if (value) {
             const card:any = await Card.findOne({code: ctx.params.code});
-            console.log(card)
             if (card) {
-                if (card.amount >= value.amount || value.type == "deposite") {
+                if (card.amount >= value.amount || value.type == "deposit") {
                     const data = {
                         amount: value.type == 'deposit' ? card.amount + value.amount : card.amount - value.amount,
                     };
@@ -64,6 +64,10 @@ export default {
                             type: value.type,
                             amount: value.amount,
                         }
+                        const new_doc = await Transaction.insertOne(log_data);
+                        ctx.response.status = 200;
+                        ctx.response.body = {message: "updated", new_balance: data.amount};
+
                     } catch (e) {
                         ctx.response.status = 404;
                         ctx.response.body = {error: "Card not found."};
